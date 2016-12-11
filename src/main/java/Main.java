@@ -1,17 +1,27 @@
-import java.sql.*;
-import java.util.HashMap;
+import static spark.Spark.get;
+import static spark.SparkBase.port;
+import static spark.SparkBase.staticFileLocation;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import javax.measure.quantity.Energy;
+import javax.measure.quantity.Mass;
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
 
-import static spark.Spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
-import spark.ModelAndView;
-import static spark.Spark.get;
+import org.jscience.physics.amount.Amount;
+import org.jscience.physics.model.RelativisticModel;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
+
+import spark.ModelAndView;
+import spark.template.freemarker.FreeMarkerEngine;
 
 public class Main {
 
@@ -23,9 +33,20 @@ public class Main {
     get("/hello", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("message", "Hello World!");
+            
+            attributes.put("message", "Spark i Freemaker w akcji!");
+            RelativisticModel.select();
+            Amount<Mass> m = Amount.valueOf("12 GeV").to(SI.KILOGRAM);
+            String massMessage = "E=mc^2: 12 GeV = " + m.toString();
+            attributes.put("massMessage", massMessage);
+            Amount<Energy> e = Amount.valueOf("100 kg").to(SI.GIGA(NonSI.ELECTRON_VOLT));
+            String energyMessage = "E=mc^2: 100 kg = " + e.toString();
+            attributes.put("energyMessage", energyMessage);
 
             return new ModelAndView(attributes, "hello.ftl");
         }, new FreeMarkerEngine());
+    
+    
 
     get("/", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();

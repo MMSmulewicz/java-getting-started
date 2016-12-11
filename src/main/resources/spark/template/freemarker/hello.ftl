@@ -23,5 +23,7 @@
   </div>
 </div>
 
+${massMessage}
+
 </body>
 </html>
