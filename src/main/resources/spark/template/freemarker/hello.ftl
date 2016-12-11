@@ -5,7 +5,7 @@
 </head>
 
 <body>
-  <#include "nav.ftl">
+  <#include "nav-hello.ftl">
 
 <div class="jumbotron text-center">
   <div class="container">
